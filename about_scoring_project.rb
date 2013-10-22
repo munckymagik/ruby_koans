@@ -29,8 +29,32 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+BonusCount = 3
+HalfScore = 50
+Score = 100
+Bonus = 1000
+
+def get_distribution(dice)
+  dice.inject(Hash.new(0)) do |counter, elem|
+    counter[elem] += 1
+    counter
+  end
+end
+
 def score(dice)
-  # You need to write this method
+  distribution = get_distribution(dice)
+
+  result = distribution.to_a.inject(0) do |accum, stat|
+    number, count = stat
+    bonus, scores = count / BonusCount, count % BonusCount
+
+    accum += case number
+             when 1 then (Bonus * bonus) + (Score * scores)
+             when 5 then (number * Score * bonus) + (HalfScore * scores)
+             when 2, 3, 4, 6 then (number * Score * bonus)
+             else 0
+             end
+  end
 end
 
 class AboutScoringProject < Neo::Koan
