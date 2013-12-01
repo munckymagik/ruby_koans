@@ -16,7 +16,8 @@ end
 def ruby_version?(version)
   RUBY_VERSION =~ /^#{version}/ ||
     (version == 'jruby' && defined?(JRUBY_VERSION)) ||
-    (version == 'mri' && ! defined?(JRUBY_VERSION))
+    (version == 'mri' && ! defined?(JRUBY_VERSION)) ||
+    (defined?(RUBY_ENGINE) && version == RUBY_ENGINE)
 end
 
 def in_ruby_version(*versions)
